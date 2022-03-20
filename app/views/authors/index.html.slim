@@ -1,0 +1,10 @@
+p[style="color: green"]
+  = notice
+h1
+  | Authors
+#authors
+  - @authors.each do |author|
+    = render author
+    p
+      = link_to "Show this author", author
+= link_to "New author", new_author_path
