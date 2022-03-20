@@ -4,7 +4,7 @@ require:
   - rubocop/cop/internal_affairs
   - rubocop-performance
   - rubocop-rspec
-  - rubocop-rake
+  - rubocop-rails
 
 AllCops:
   NewCops: enable
@@ -40,7 +40,7 @@ Style/FormatStringToken:
     - spec/**/*
 
 Style/FrozenStringLiteralComment:
-  Enforce: true
+  Enabled: true
 
 Style/IpAddresses:
   # The test for this cop includes strings that would cause offenses
