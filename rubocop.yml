@@ -25,6 +25,9 @@ Naming/PredicateName:
     - def_node_matcher
     - def_node_search
 
+Style/Documentation:
+  Enabled: false
+
 Style/AccessorGrouping:
   Exclude:
     - lib/rubocop/formatter/base_formatter.rb
