@@ -19,5 +19,5 @@ test:
 production:
   <<: *default
   database: cat-chat-production
-  username:
-  password:
+  username: cat-chat-admin
+  password: Rails.application.credentials.gcp[:db_password]
