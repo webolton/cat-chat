@@ -1,0 +1,58 @@
+# Base image
+FROM ruby:2.7
+
+# Install pg
+RUN apt-get update -qq && apt-get -y install apt-utils build-essential nodejs libpq-dev git postgresql-client
+RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
+RUN sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -sc)-pgdg main" > /etc/apt/sources.list.d/PostgreSQL.list'
+RUN apt-get update -qq && apt-get -y install postgresql-10
+
+# Define where the application should be inside the image
+ENV RAILS_ROOT /var/www/cat-chat
+
+# Set the rails environment -- in future we can change this
+ARG RAILS_ENV=production
+
+# Set working directory in image
+WORKDIR $RAILS_ROOT
+
+# Create application home. Server will likely need a pids, so create it in one shot.
+RUN mkdir -p $RAILS_ROOT/tmp/pids
+
+# For Puma
+RUN mkdir -p $RAILS_ROOT/tmp/sockets
+
+# ***If you are vendoring your gems.***
+# Create bundle folder. bundle install will installs all gems in image.
+RUN mkdir -p $RAILS_ROOT/vendor/bundle
+
+# Use Gemfiles as Docker cache markers. Always bundle before coping app src.
+COPY Gemfile Gemfile
+COPY Gemfile.lock Gemfile.lock
+
+# Public rubygems.
+RUN gem source https://rubygems.org/
+
+# Install bundler
+RUN gem install bundler
+
+# If you are vendoring your gems.
+# Finish establishing ruby env.
+COPY vendor/bundle vendor/bundle
+
+# Set a bundle configuration value
+RUN bundle config set path 'vendor/bundle'
+
+RUN bundle install
+
+# Copy the application into place
+COPY . .
+
+# Copy the db config into place -- for pg in the container
+COPY config/containers/pg_container/${RAILS_ENV}/database.yml config/database.yml
+
+# Clear the cache
+RUN bundle exec rake tmp:clear
+
+# Run app
+CMD [ "confg/containers/app_cmd.sh" ]
