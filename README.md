@@ -1,24 +1,27 @@
-# README
+# CAT-CHAT
+## An application for some demo deployment strategies
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+### Dockerfile + pg + puma (no webserver)
+This is a pretty basic setup with some defaults that could be improved. The default db user is
+`postgres`, so if you wanted a specific user, you would need to create one and give it its own
+credentials. I am setting a db password via host environment.
 
-Things you may want to cover:
+Build the image:
 
-* Ruby version
+```bash
+# Generate secret_key_base
+  rails secret
 
-* System dependencies
+# Set up your secret key with editor of your choice and put in secret_key_base: XXX. Save and exit.
+  EDITOR="code --wait" rails credentials:edit
 
-* Configuration
+  export CAT_CHAT_DB_PW=XXXXXXXXXXXX
 
-* Database creation
+  make build-puma-pg
+```
 
-* Database initialization
+Run the image:
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+```bash
+  run-puma-pg
+```
