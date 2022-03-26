@@ -1,0 +1,8 @@
+production:
+  adapter: postgresql
+  pool: 5
+  timeout: 5000
+  encoding: unicode
+  database: cat-chat-production
+  username: <%= ENV['CAT_CHAT_DB_USER'] %>
+  password: <%= ENV['CAT_CHAT_DB_PW'] %>
