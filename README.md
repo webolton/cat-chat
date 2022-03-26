@@ -23,5 +23,17 @@ Build the image:
 Run the image:
 
 ```bash
-  run-puma-pg
+  make run-puma-pg
+```
+
+Stop and remove the container:
+
+```bash
+  make kill-puma-pg
+```
+
+### Cleanup docker
+
+```bash
+  make docker-clean
 ```
