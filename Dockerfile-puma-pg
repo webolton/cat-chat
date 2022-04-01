@@ -26,6 +26,7 @@ WORKDIR $RAILS_ROOT
 
 # Create application home. Server will likely need a pids, so create it in one shot.
 RUN mkdir -p $RAILS_ROOT/tmp/pids
+RUN mkdir -p $RAILS_ROOT/tmp/sockets
 
 # ***If you are vendoring your gems.***
 # Create bundle folder. bundle install will installs all gems in image.
